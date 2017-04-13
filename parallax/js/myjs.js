@@ -55,7 +55,7 @@ $(function(){
 		TweenMax.to($(".cuadros1"), .7, {css: {left: -lefta*0.035}});
 		TweenMax.to($(".cuadros2"), .7, {css: {left: -lefta*0.025}});
 		TweenMax.to($('.text_shadow'), .5, {css:{textShadow:'' + -((lefta * 0.02)) + 'px ' + -((thisPosCenter * 0.02)) + 'px 0 rgba(24,230,152,0.5)'}});
-
+	})
 	// 	// move($('#boxx'),'left',left,300);
 	// 	//move($('.cuadros2'),'left',100,1000);
 	// })
