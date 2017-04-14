@@ -1,4 +1,15 @@
 $(function(){
+	var isMobile = {
+    Android: function() {
+        return navigator.userAgent.match(/Android/i);
+    },
+    iOS: function() {
+        return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+    },
+    any: function() {
+        return (isMobile.Android() || isMobile.iOS());
+    }
+};
 	$("html").niceScroll({
 		cursoropacitymin:0.5,
 		cursorwidth:6,
@@ -6,7 +17,10 @@ $(function(){
 		zindex:100,
 		background:'rgba(0,0,0,0.3)'
 	});
-	setTimeout(function(){
+	if(isMobile.any){
+
+	}else{
+		setTimeout(function(){
 		skrollr.init({
 			smoothScrollingDuration: 5000,
 			constants: {
@@ -26,6 +40,27 @@ $(function(){
 			}
 		});
 	},20);
+	}
+	/*setTimeout(function(){
+		skrollr.init({
+			smoothScrollingDuration: 5000,
+			constants: {
+				valinit: function() {
+					return $(window).height()/2;
+				},
+				secondval:function(){
+					console.log($('.path2').position().top-($(window).height()/2))
+					return $('.path2').position().top-($(window).height()/2);
+				},
+				thirdval: function() {
+					return 	$('.path3').position().top -($(window).height()*0.5);
+				},
+				fourthval: function() {
+					return 	$('.path4').position().top -($(window).height()*0.5);
+				}
+			}
+		});
+	},20);*/
 	$(window).on('scroll',function(){
 		if($(window).scrollTop()>$('header').position().top){
 			$('nav').css('position','fixed');
