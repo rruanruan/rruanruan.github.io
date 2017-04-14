@@ -17,12 +17,15 @@ $(function(){
 						return $(window).height()/2;
 					},
 					secondval:function(){
+						console.log($('.path2').position().top-($(window).height()/2),'path2');
 						return $('.path2').position().top-($(window).height()/2);
 					},
 					thirdval: function() {
+						console.log($('.path3').position().top -($(window).height()*0.5),'path3');
 						return 	$('.path3').position().top -($(window).height()*0.5);
 					},
 					fourthval: function() {
+						console.log($('.path4').position().top -($(window).height()*0.5),'path4');
 						return 	$('.path4').position().top -($(window).height()*0.5);
 					}
 				}
