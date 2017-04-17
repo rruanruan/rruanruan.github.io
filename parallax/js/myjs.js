@@ -1,4 +1,7 @@
 $(function(){
+	setInterval(function(){
+	console.log(document.readyState);
+	},300);
 	$("html").niceScroll({
 		cursoropacitymin:0.5,
 		cursorwidth:6,
