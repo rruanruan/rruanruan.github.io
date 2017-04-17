@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>index2</title>
+		<script>
+			var iScale = 1 / window.devicePixelRatio;
+			document.write('<meta name="viewport" content="width=device-width,initial-scale='+iScale+',minimum-scale='+iScale+',maximum-scale='+iScale+',user-scalable=no"/>');
+		</script>
+		<script>
+			var iWidth = document.documentElement.clientWidth;
+			document.getElementsByTagName('html')[0].style.fontSize = iWidth /64+ 'px';
+		</script>
+		<style>
+			html,body{
+				margin: 0;width: 100%;height: 100%;
+			}
+			#wrap div {
+				width: 100%;height: 100%;
+				position: absolute;
+				-webkit-transform-origin: right;
+			}
+			img{
+				width: 100%;height: 100%;
+			}
+			#box {
+				width: 100%;height: 100%;position: relative;
+				-webkit-transform-style: preserve-3d;
+				-webkit-transform-origin: right;
+			}
+			#wrap {
+				width: 100%;height: 100%;
+				overflow:hidden;
+				perspective: 15.4rem;
+				background:#F4F4CD;
+
+			}
+			.musicbtn {
+				height: 2.8rem;width: 2.8rem;
+				position: absolute;top: 1.7rem;right: 1.0rem;
+				background: rgba(255, 255, 255, .2) url(img/musicbtn.png) no-repeat center 0px;
+				background-size: 100% auto;
+				z-index: 888;
+				border: 1px solid #fff;border-radius: 50%;
+			}
+			/*------------------页面渲染--------------------------*/			
+			#preload {
+			   width: 100%;
+			   height: 100%;
+			   display: block;
+			   background: url(img/bg.jpg);
+			   position: absolute;
+			   top: 0px;
+			   left: 0px;
+			   overflow: hidden;
+			   z-index: 99;
+			}
+			#preload .group {
+			    left: 50%;
+			    top: 50%;
+			    position: absolute;
+			    margin: -70px 0 0 0;
+			    /*transform: rotateZ(0deg) scale3d(1, 1, 1);*/
+			    transform-origin: left center;
+			}
+			#preload .p1 {
+			    width: 453px;
+			    height: 236px;
+			    background: url(img/p1.png) no-repeat;
+			    margin: -90px 0 0 -226px;
+			}
+			#preload .box1 {
+			    width: 333px;
+			    height: 102px;
+			    background: url(img/box1.png) no-repeat;
+			    margin: -30px 0 0 -166px;
+			    position: absolute;
+			    z-index: -1;
+			}
+			#preload .cat {
+			    width: 139px;
+			    height: 53px;
+			    background: url(img/cat.png) no-repeat;
+			    margin: 20px 0 0 -69px;
+			    position: absolute;
+			    z-index: -1;
+			}
+			#preload .box2 {
+			    width: 333px;
+			    height: 97px;
+			    background: url(img/box2.png) no-repeat;
+			    margin: -40px 0 0 -166px;
+			    position:relative;
+			}
+			 #preload .n1{
+				color:#fff;
+				font-size:30px;
+				position: absolute;bottom:0;left:50%;margin-left:-30px;
+			 }
+			#pc{
+				background:url('img/67.png') #e10000 no-repeat center;
+				width:100%;height:100%;position:absolute;z-index:100;
+			}
+			/*#tip{
+				background:url('img/66.png') rgba(255,0,0,0.8) no-repeat center;
+				width:100%;height:100%;position:absolute;z-index:100;
+				display:none;
+			}*/
+		</style>
+	</head>
+	<body>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+		<div id='pc'></div>
+		<!-- <div id='tip'></div> -->
+		<audio class="musicaudio" src="Lost my pieces.mp3" loop></audio>
+		<!---页面渲染-->
+		<div id="preload">
+	        <div class="group" style="transform: rotateZ(0deg) scale3d(1, 1, 1);">
+	            <div class="p1"></div>
+	            <div class="box1" style="margin-top: -80px;"></div>
+	            <div class="cat" style="margin-top: -30px;"></div>
+	            <div class="box2"><div class="n1">0</div></div>
+	        </div>
+	    </div>
+	    <div class="musicbtn"></div>
+		<div id='wrap'>
+			<div id="box"></div>
+		</div>
+		<script>
+			var box1 = document.getElementsByClassName("box1")[0];
+			var cat = document.getElementsByClassName("cat")[0];
+			var n1 = document.getElementsByClassName("n1")[0];
+			var group = document.getElementsByClassName("group")[0];
+			var preload = document.getElementById("preload");
+			var num =0;//进度条进度.
+			var oPc = document.getElementById('pc'); 
+			//var oTip = document.getElementById('tip'); 
+			function mobile(){
+				 try{
+			        document.createEvent("TouchEvent");
+			        return true;
+			    }
+			    catch(e){
+			        return false;
+			    }
+			}
+			var isMobile = mobile();
+			if(isMobile){
+				oPc.style.display = 'none';
+				//=================loading part================================
+				move(box1,'marginTop',-140,1000);
+				move(cat,'marginTop',-90,1000);
+				var timer1 = setInterval(function(){
+					num++;//模拟   获取加载进度
+					n1.innerHTML = num+"%";
+					if (num>99) {
+						num = 100;
+						clearInterval(timer1);
+						n1.style.display = 'none';
+						group.rotate = 0;
+						group.scale = 0;
+						group.opacity = 100;
+						var timer2 = setInterval(function(){
+							group.rotate+=10;
+							group.scale += 0.1;
+							group.opacity -= 5;
+							group.style.transform = 'rotateZ('+group.rotate+'deg) scale3d('+group.scale+', '+group.scale+', 1)';
+							group.style.opacity = group.opacity/100;
+							if (group.opacity <= 1){
+								preload.style.display = 'none';
+								clearInterval(timer2);
+								rotateFn();
+							} 
+						},30);
+					}
+				},9);
+				//===============   loading part end  ==========================
+			}
+			function move(obj,attr,target,duration){
+				var begin = parseInt(getComputedStyle(obj)[attr]);
+				var time = new Date().getTime();
+				obj.attr = setInterval(function(){
+					var now = new Date().getTime();
+					var t = now - time;
+					var distance = (target-begin)/duration*t;
+					obj.style[attr] = begin+distance+'px'; 
+					if(t>=duration){
+						obj.style[attr] = target+'px'; 
+						clearInterval(obj.attr);
+					}
+				},30);
+			}	
+			//======================music part===========================
+			var musicao = document.getElementsByClassName('musicaudio')[0];
+			var musicbtn = document.getElementsByClassName('musicbtn')[0];
+			window.onload = function() {
+				musicao.play();
+				musicbtn.style.cssText = 'background-position:center 0px;'
+			}
+			musicbtn.onclick = function() {
+				if(musicao.paused) {
+					musicao.play();
+					musicbtn.style.cssText = 'background-position:center 0px;'
+				} else {
+					musicao.pause();
+					musicbtn.style.cssText = 'background-position:center -47px;'
+				};
+			};
+			//=======================music part end =========================
+			var box = document.getElementById('box');
+			box.isRun = true;
+			for(var i = 0; i < 20; i++) { //布局
+				var div = document.createElement('div');
+				div.style.WebkitTransform = "rotateY(" + i * -18 + "deg) ";
+				box.appendChild(div);
+			}
+			var divs = box.getElementsByTagName('div');
+			for(var i = 0; i < divs.length; i++) {
+				divs[i].style.background = "url('img/a.png')";
+				divs[i].style.backgroundSize = '100% 100%'; //添加背景
+			}
+			for(var i = 0; i < divs.length / 2; i++) {
+				var oImg = document.createElement('img');
+				oImg.src = 'img/' + i + '.png';
+				divs[2 * i].appendChild(oImg); //添加元素
+			}
+			box.onclick = function() {
+				if(box.isRun) {
+						clearTimeout(rotateTimer);
+						box.isRun = false;
+					}else{
+						rotateFn();
+						console.log('ddddddd');
+						box.isRun = true;
+					}
+			}
+			var position = {};
+			box.addEventListener('touchstart',down);
+			box.addEventListener('touchmove',slip);
+			box.addEventListener('touchend',up);
+			function down(ev){
+				position.x = ev.targetTouches[0].pageX;
+			}
+			function slip(ev){
+				position.newX = ev.targetTouches[0].pageX;
+			}
+			function up(){
+				if(position.newX >position.x){
+					iSpeed = 2;
+				}
+				if(position.newX <position.x){
+					iSpeed = -2;
+				}
+			}
+			box.rotate = 0;
+			var iSpeed = 2;
+			var rotateTimer = null;
+			var n = 0;
+			var isFront = false; //判断更新的图片为前十张还是后十张
+			var nShow = 0;
+			function initShowState(){//初始化图片可见状态.
+				for(var i=0;i<20;i++){
+					divs[i].isShow = true;
+				}
+				for(var i=7;i<18;i++){
+					divs[i].isShow = false;
+				}
+			}
+			initShowState();
+			var nInitHidden= 17;
+			var nInitShow = 7;
+			function rotateFn() { //旋转整个盒子.
+				rotateTimer = setInterval(function() {
+					var a = Math.abs(box.rotate);
+					if(a%18 == 0){
+						if(iSpeed>0){//逆时针
+							divs[nInitShow].isShow = true;
+							divs[nInitHidden].isShow = false;
+							nInitShow++;
+							if(nInitShow == 20){
+								nInitShow = 0;
+							}
+							nInitHidden++;
+							if(nInitHidden == 20){
+								nInitHidden = 0;
+							}
+						}
+						if(iSpeed<0){//顺时针
+							divs[nInitHidden].isShow = true;
+							divs[nInitShow].isShow= false;
+							nInitShow--;
+							if(nInitShow == -1){
+								nInitShow = 19;
+							}
+							nInitHidden--;
+							if(nInitHidden == -1){
+								nInitHidden = 19;
+							}
+						}
+					}
+					if(a % 180 == 40) { //转到指定角度更新图片
+						for(var i=0;i<divs.length;i++){
+							if(divs[i].isShow == false){//更新图片
+								divs[i].style.background = "url(" + arr[n] + ")";
+								divs[i].style.backgroundSize = '100% 100%';
+							}
+						}
+						console.log(n,arr[n]);
+						if(iSpeed>0){
+							n++;
+							if(n==arr.length){
+								n=0;//此处可添加结尾.弹出分享页.
+								//clearInterval(rotateTimer);
+							}
+						}
+						if(iSpeed<0){
+							n--;
+							if(n==-1){
+								n=arr.length-1;
+							}
+						}
+					}
+					box.rotate += iSpeed;
+					box.style.transform = 'rotateY(' + box.rotate + 'deg)';
+				}, 30);
+			}
+			var arr = ['img/a.png', 'img/b.png', 'img/c.png', 'img/d.png', 'img/e.png', 'img/f.png', 'img/g.png'];
+		</script>
+	</body>
+</html>
