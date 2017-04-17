@@ -134,6 +134,7 @@
 			var preload = document.getElementById("preload");
 			var num =0;//进度条进度.
 			var oPc = document.getElementById('pc'); 
+			var arr = ['img/a.png', 'img/b.png', 'img/c.png', 'img/d.png', 'img/e.png', 'img/f.png', 'img/g.png'];
 			//var oTip = document.getElementById('tip'); 
 			function mobile(){
 				 try{
@@ -144,6 +145,16 @@
 			        return false;
 			    }
 			}
+			function Picloaded(){
+				arr.forEach(function(item,i){
+					var img = new Image();
+					img.src = item;
+					if(img.complete){
+						num++;
+					}
+				});
+				return Math.ceil(num/arr.length*100);
+				}
 			var isMobile = mobile();
 			if(isMobile){
 				oPc.style.display = 'none';
@@ -151,7 +162,8 @@
 				move(box1,'marginTop',-140,1000);
 				move(cat,'marginTop',-90,1000);
 				var timer1 = setInterval(function(){
-					num++;//模拟   获取加载进度
+					num = 0;
+					num = Picloaded();
 					n1.innerHTML = num+"%";
 					if (num>99) {
 						num = 100;
@@ -173,7 +185,7 @@
 							} 
 						},30);
 					}
-				},9);
+				},20);
 				//===============   loading part end  ==========================
 			}
 			function move(obj,attr,target,duration){
@@ -230,7 +242,6 @@
 						box.isRun = false;
 					}else{
 						rotateFn();
-						console.log('ddddddd');
 						box.isRun = true;
 					}
 			}
@@ -305,7 +316,6 @@
 								divs[i].style.backgroundSize = '100% 100%';
 							}
 						}
-						console.log(n,arr[n]);
 						if(iSpeed>0){
 							n++;
 							if(n==arr.length){
@@ -324,7 +334,7 @@
 					box.style.transform = 'rotateY(' + box.rotate + 'deg)';
 				}, 30);
 			}
-			var arr = ['img/a.png', 'img/b.png', 'img/c.png', 'img/d.png', 'img/e.png', 'img/f.png', 'img/g.png'];
+			
 		</script>
 	</body>
 </html>
