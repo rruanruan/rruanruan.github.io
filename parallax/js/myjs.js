@@ -6,28 +6,9 @@ $(function(){
 		zindex:100,
 		background:'rgba(0,0,0,0.3)'
 	});
-	if(navigator.userAgent.match(/iPhone|iPad|iPod|Android/i)){
-
+	var isMobile = navigator.userAgent.match(/iPhone|iPad|iPod|Android/i);
+	if(isMobile){
 	}else{
-		setTimeout(function(){
-			skrollr.init({
-				smoothScrollingDuration: 5000,
-				constants: {
-					valinit: function() {
-						return $(window).height()/2;
-					},
-					secondval:function(){
-						return $('.path2').position().top-($(window).height()/2);
-					},
-					thirdval: function() {
-						return 	$('.path3').position().top -($(window).height()*0.5);
-					},
-					fourthval: function() {
-						return 	$('.path4').position().top -($(window).height()*0.5);
-					}
-				}
-			});
-		},20);
 		$(window).on('scroll',function(){
 			if($(window).scrollTop()>$('header').position().top){
 				$('nav').css('position','fixed');
@@ -51,11 +32,38 @@ $(function(){
 	
 	$(window).on('load resize',function(){
 		var windowH = $(window).innerHeight();
+		var h = Math.ceil($(window).innerHeight()/145)*145;
+		$('.welcome').height(h);
 		if(windowH>600){
-			var h = Math.ceil($(window).innerHeight()/145)*145;
-			$('.welcome').height(h);
+			if(isMobile){
+
+			}else{
+				setTimeout(function(){
+					skrollr.init({
+						smoothScrollingDuration: 5000,
+						constants: {
+							valinit: function() {
+								return $(window).height()/2;
+							},
+							secondval:function(){
+								console.log($('.path2').position().top-($(window).height()/2),'path2');
+								return $('.path2').position().top-($(window).height()/2);
+							},
+							thirdval: function() {
+								console.log($('.path3').position().top -($(window).height()*0.5),'path3')
+								return 	$('.path3').position().top -($(window).height()*0.5);
+							},
+							fourthval: function() {
+								console.log($('.path4').position().top -($(window).height()*0.5),'path4');
+								return 	$('.path4').position().top -($(window).height()*0.5);
+							}
+						}
+					});
+				},20);	
+			}
 		}else{
 			$('.welcome').height(500);
+			skrollr.init().destroy();
 		}
 		$('.welcome h1').css('marginTop',-$('.welcome h1').height()/2);
 	})
