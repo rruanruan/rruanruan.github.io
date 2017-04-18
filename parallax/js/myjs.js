@@ -1,7 +1,31 @@
 $(function(){
-	setInterval(function(){
-	console.log(document.readyState);
+	var n = 1;
+	var timer2 = setInterval(function(){
+		var w = $(window).innerWidth();
+		n*=2;
+		$('.loadProgress').css('width',n/100*w);
+		if(n>=100){
+			clearInterval(timer2);
+		}
 	},300);
+	setTimeout(function(){
+		var timer = setInterval(function(){
+			if(document.readyState =='complete'){
+				$('.loaded').show();
+				$('.preload').fadeOut('slow');
+				$('.bg').css('background-position','0 0')
+				$('.cuadros1').css('background-position','50% 0')
+				$('.cuadros2').css('background-position','calc(50% - 75px) 200px');
+				setTimeout(function(){
+					$('.welcome h1').css({'transform':'translateY(0)','top':($('.welcome').height()/2)-67}).animate({opacity:1},500);
+				},900);
+				setTimeout(function(){
+					$('.points1').animate({opacity:1},800);
+				},1900);
+				clearInterval(timer);
+			}
+		},1000);
+	},1000);
 	$("html").niceScroll({
 		cursoropacitymin:0.5,
 		cursorwidth:6,
@@ -9,6 +33,7 @@ $(function(){
 		zindex:100,
 		background:'rgba(0,0,0,0.3)'
 	});
+
 	var isMobile = navigator.userAgent.match(/iPhone|iPad|iPod|Android/i);
 	if(isMobile){
 	}else{
@@ -32,14 +57,12 @@ $(function(){
 			TweenMax.to($('.text_shadow'), .5, {css:{textShadow:'' + -((lefta * 0.02)) + 'px ' + -((thisPosCenter * 0.02)) + 'px 0 rgba(24,230,152,0.5)'}});
 		});
 	}
-	
 	$(window).on('load resize',function(){
 		var windowH = $(window).innerHeight();
 		var h = Math.ceil($(window).innerHeight()/145)*145;
 		$('.welcome').height(h);
 		if(windowH>600){
 			if(isMobile){
-
 			}else{
 				setTimeout(function(){
 					skrollr.init({
@@ -49,15 +72,12 @@ $(function(){
 								return $(window).height()/2;
 							},
 							secondval:function(){
-								console.log($('.path2').position().top-($(window).height()/2),'path2');
 								return $('.path2').position().top-($(window).height()/2);
 							},
 							thirdval: function() {
-								console.log($('.path3').position().top -($(window).height()*0.5),'path3')
 								return 	$('.path3').position().top -($(window).height()*0.5);
 							},
 							fourthval: function() {
-								console.log($('.path4').position().top -($(window).height()*0.5),'path4');
 								return 	$('.path4').position().top -($(window).height()*0.5);
 							}
 						}
@@ -68,6 +88,5 @@ $(function(){
 			$('.welcome').height(500);
 			skrollr.init().destroy();
 		}
-		$('.welcome h1').css('marginTop',-$('.welcome h1').height()/2);
 	})
 });
